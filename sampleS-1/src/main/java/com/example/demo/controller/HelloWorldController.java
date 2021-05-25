@@ -22,7 +22,7 @@ public class HelloWorldController {
     @RequestMapping(value = "/Test2", method = RequestMethod.GET)
     public String Test2(Model model) {
         model.addAttribute("TestMes", "springbootのテストです。");
-        model.addAttribute("TestMes2", "こんにちは。");
+        model.addAttribute("TestMes2", "こんにちは");
         return "test2";
     }    
     
