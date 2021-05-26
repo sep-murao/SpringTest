@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>ユーザー情報詳細</title>
+    <link href="/css/add.css" rel="stylesheet"></link>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+  <h1>ユーザー情報詳細</h1>
+  <table th:object="${userRequest}">
+    <tr>
+      <th class="cell_title">名前</th>
+      <th class="cell_required"></th>
+      <td th:text="*{name}"></td>
+    </tr>
+    <tr>
+      <th class="cell_title">住所</th>
+      <th class="cell_required"></th>
+      <td th:text="*{address}"></td>
+    </tr>
+    <tr>
+      <th class="cell_title">電話番号</th>
+      <th class="cell_required"></th>
+      <td th:text="*{phone}"></td>
+    </tr>
+  </table>
+  <div class="btn_area_center">
+    <a th:href="@{/user/{id}/edit(id=*{id})}">編集</a>
+    <a th:href="@{/user/{id}/delete(id=*{id})}">削除</a>
+    <a href="/user/list">一覧に戻る</a>
+  </div>
+  </body>
+</html>
