@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>編集確認</title>
+    <title>登録確認</title>
     <link href="/css/add.css" rel="stylesheet"></link>
     <meta charset="utf-8" />
   </head>
   <body>
-  <h1>住所管理システム：住所録編集</h1>
-<form th:action="@{/user/updateCommit}" th:object="${userUpdateRequest}" th:method="post">
+  <h1>住所管理システム：住所録登録</h1>
+<form th:action="@{/user/AddCommit}" th:object="${userRequest}" th:method="post">
 <!--   <table th:object="${userRequest}"> -->
- <table th:object="${userUpdateRequest}">
+
+ <table th:object="${userRequest}">
     <tr>
       <th class="cell_title">名前</th>
       <th class="cell_required"></th>
@@ -26,17 +27,16 @@
       <td th:text="*{phone}"></td>
     </tr>
   </table>
-
-   <input type="hidden" th:field="*{id}" />
+  
    <input type="hidden" th:field="*{name}">
    <input type="hidden" th:field="*{address}">
    <input type="hidden" th:field="*{phone}">
-   
-  <div class="btn_area_centerY">
+
+<div class="btn_area_centerY">
     <input type="submit" value="確認" style="width:150px" class="btn">
   </form>
-  <form th:action="@{/user/{id}/edit(id=*{id})}" th:object="${userUpdateRequest}" th:method="get">
-    <input type="submit" value="戻る"style="width:150px"  class="btn">
+  <form th:action="@{/user/add}" th:object="${userRequest}" th:method="get">
+    <input type="submit" value="戻る" style="width:150px" class="btn">
   </form>
   </div>
   </body>

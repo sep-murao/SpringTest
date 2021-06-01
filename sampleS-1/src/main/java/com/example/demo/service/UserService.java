@@ -12,6 +12,9 @@ import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 /**
  * ユーザー情報 Service
@@ -34,6 +37,9 @@ public class UserService {
     return userRepository.findAll();
   }
   
+  public Page<User> seachpageAll(Pageable pageable) {
+	    return userRepository.findAll(pageable);
+	  }
   
   /**
    * ユーザー情報 主キー検索
@@ -42,6 +48,12 @@ public class UserService {
   public User findById(Long id) {
     return userRepository.findById(id).get();
   }
+  
+  
+  //検索機能
+  public Page<User> getUsers(Pageable pageable){
+	    return userRepository.findByStatusCode("accepted", pageable); // (3)
+	}
   
 
   /**

@@ -20,6 +20,10 @@ import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 /**
  * ユーザー情報 Controller
  */
@@ -38,9 +42,19 @@ public class UserController {
    * @return ユーザー情報一覧画面
    */
   @GetMapping(value = "/user/list")
-  public String displayList(Model model) {
-    List<User> userlist = userService.searchAll();
-    model.addAttribute("userlist", userlist);
+  public String displayList(Model model, @PageableDefault(size =10) Pageable pageable) {
+   // List<User> userlist = userService.searchAll();
+    Page<User> userlist = userService.seachpageAll(pageable);
+   // model.addAttribute("userlist", userlist);
+    PageWrapper<User> page = new PageWrapper<User>(userlist, "list");
+    model.addAttribute("page", page);
+    model.addAttribute("content", page.getContent());
+    
+    //検索機能
+    Page<User> userPage = UserService.getUsers(pageable); 
+    model.addAttribute("userPage", userPage);
+
+
     return "user/list";
   }
 
@@ -56,7 +70,7 @@ public class UserController {
   }
 
   /**
-   * ユーザー新規登録
+   * ユーザー新規登録更新
    * @param userRequest リクエストデータ
    * @param model Model
    * @return ユーザー情報一覧画面
@@ -71,25 +85,46 @@ public class UserController {
 
       model.addAttribute("validationError", errorList);
       return "user/add";
+   
     }
 
-    // ユーザー情報の登録
-    userService.create(userRequest);
-    return "redirect:/user/list";
-  }
+    model.addAttribute("UserRequest", userRequest);
+    //userService.update(userUpdateRequest);
+  //  return String.format("/user/{id}"());
+    return "user/view3";
+}
+  
   
   /**
-   * ユーザー情報詳細画面を表示
+   * 新規登録確認
+   * @param userUpdateRequest
+   * @param model
+   * @return
+   */
+  @RequestMapping(value="/user/AddCommit", method=RequestMethod.POST)
+  public String AddCommit( @ModelAttribute("userRequest") UserRequest userRequest,  Model model) {
+
+      // ユーザー情報の更新
+     // model.addAttribute("userUpdateRequest", userUpdateRequest);
+     userService.create(userRequest);
+     return "redirect:/user/list";
+  }
+  
+ 
+  
+  /**
+   * 削除確認画面
    * @param id 表示するユーザーID
    * @param model Model
-   * @return ユーザー情報詳細画面
+   * @return 
    */
   @GetMapping("/user/{id}")
   public String displayView(@PathVariable Long id, Model model) {
     User user = userService.findById(id);
     model.addAttribute("userRequest", user);
-    return "user/view";
+    return "user/view2";
   }
+  
   
   
   /**
@@ -126,10 +161,31 @@ public class UserController {
             model.addAttribute("validationError", errorList);
             return "user/edit";
           }
-      // ユーザー情報の更新
-      userService.update(userUpdateRequest);
-      return String.format("redirect:/user/%d", userUpdateRequest.getId());
+
+      model.addAttribute("userUpdateRequest", userUpdateRequest);
+      //userService.update(userUpdateRequest);
+    //  return String.format("/user/{id}"());
+      return "user/view";
   }
+  
+  
+  
+  /**
+   * 編集確認
+   * @param userUpdateRequest
+   * @param model
+   * @return
+   */
+  @RequestMapping(value="/user/updateCommit", method=RequestMethod.POST)
+  public String updateCommit( @ModelAttribute("userUpdateRequest") UserUpdateRequest userUpdateRequest,  Model model) {
+
+      // ユーザー情報の更新
+     // model.addAttribute("userUpdateRequest", userUpdateRequest);
+     userService.update(userUpdateRequest);
+     // return "user/list";
+     return "redirect:/user/list";
+  }
+  
   
   
   /**

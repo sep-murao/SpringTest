@@ -1,38 +1,91 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>ユーザー情報一覧</title>
+    <title>一覧</title>
     <link href="/css/list.css" rel="stylesheet"></link>
     <meta charset="utf-8" />
   </head>
   <body>
-    <h1>ユーザー情報一覧</h1>
-    <div><a th:href="@{/user/add}">新規登録はこちら</a></div>
-  <table>
+    <h1>住所管理システム：住所録一覧</h1>
+    
+  <div><form th:action="@{/user/add}" >
+    <input type="submit" value="新規登録" style="width:150px" class="btn">
+  </form></div>
+  
+<table>
     <thead>
       <tr>
         <th>ID</th>
         <th>名前</th>
         <th>住所</th>
         <th>電話番号</th>
-        <th>更新日時</th>
-        <th>登録日時</th>
-        <th>削除日時</th>
+        <th>&nbsp;</th>
         <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-        <tr th:each="user : ${userlist}" th:object="${user}">
+        <tr th:each="user : ${content}" th:object="${user}">
             <td class="center" th:text="*{id}"></td>
             <td th:text="*{name}"></td>
             <td th:text="*{address}"></td>
             <td class="center" th:text="*{phone}"></td>
-            <td class="center" th:text="${#dates.format(user.updateDate, 'yyyy/MM/dd')}"></td>
-            <td class="center" th:text="${#dates.format(user.createDate, 'yyyy/MM/dd')}"></td>
-            <td class="center" th:text="${#dates.format(user.deleteDate, 'yyyy/MM/dd')}"></td>
-            <td class="center"><a th:href="@{/user/{id}(id=*{id})}">詳細</a></td>
+            <td class="center"><a th:href="@{/user/{id}/edit(id=*{id})}"><input type="submit" value="編集" ></a></td>
+            <td class="center"><a th:href="@{/user/{id}(id=*{id})}"><input type="submit" value="削除" ></a></td>
         </tr>
       </tbody>
   </table>
+  <!-- 
+        <div th:fragment='paginationbar'>
+            <ul>
+                <li th:class="${page.first} ? 'disabled':''" style="display:inline">
+                    <span th:if="${page.first}">←先頭</span>
+                    <a th:if="${not page.first}" th:href="@{${url}(page=0)}">←先頭</a>
+                </li>
+                <li th:each='i : ${#numbers.sequence(0, page.totalPages-1)}' th:class="(${i}==${page.number})? 'active' : ''" style="display:inline">
+                    <span th:if='${i}==${page.number}' th:text='${i+1}'>1</span>
+                    <a th:if='${i}!=${page.number}' th:href="@{${url}(page=${i})}">
+                        <span th:text='${i+1}'>1</span>
+                    </a>
+                </li>
+                <li th:class="${page.last} ? 'disabled':''" style="display:inline">
+                    <span th:if="${page.last}">末尾➝</span>
+                    <a th:if="${not page.last}" th:href="@{${url}(page=(${page.totalPages}-1))}">末尾➝</a>
+                </li>
+            </ul>
+        </div>
+      -->   
+		
+		<!-- ページング -->
+        <div th:fragment='paginationbar'>
+            <ul class='pagination pagination-centered'>
+                <li th:class="${page.firstPage}?'disabled':''" style="display:inline">
+                    <span th:if='${page.firstPage}'>‹‹</span>
+                    <a th:if='${not page.firstPage}' th:href='@{${page.url}(page=0,size=${page.size})}'>‹‹</a>
+                </li>
+    
+                <li th:class="${page.hasPreviousPage}? '' : 'disabled'" style="display:inline">
+                    <span th:if='${not page.hasPreviousPage}'>‹</span>
+                    <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'>«</a>
+                </li>
+
+
+                <li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''" style="display:inline">
+                    <span th:if='${item.current}' th:text='${item.number}'>1</span>
+                    <a th:if='${not item.current}' th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'>
+                    <span th:text='${item.number}'>1</span>
+                    </a>
+                </li>
+                <li th:class="${page.hasNextPage}? '' : 'disabled'" style="display:inline">
+                    <span th:if='${not page.hasNextPage}'>></span>
+                    <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page=${page.number},size=${page.size})}'>></a>
+                </li>
+                <li th:class="${page.lastPage}? 'disabled' : ''" style="display:inline">
+                    <span th:if='${page.lastPage}'>>></span>
+                    <a th:if='${not page.lastPage}' th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>>></a>
+                </li>
+                
+            </ul>
+        </div>
+          
   </body>
 </html>

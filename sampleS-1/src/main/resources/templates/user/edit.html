@@ -13,7 +13,6 @@
   </table>
     <h1>ユーザー編集</h1>
     <form th:action="@{/user/update}" th:object="${userUpdateRequest}" th:method="post">
-        <a th:href="@{/user/{id}(id=*{id})}">キャンセル</a>
         <input type="hidden" th:field="*{id}" />
         <table>
             <tr>
@@ -23,16 +22,21 @@
             </tr>
             <tr>
                 <th class="cell_title">住所</th>
-                <th class="cell_required"></th>
+                <th class="cell_required">※</th>
                 <td><input type="text" th:field="*{address}"></td>
             </tr>
             <tr>
                 <th class="cell_title">電話番号</th>
-                <th class="cell_required">※</th>
+                <th class="cell_required"></th>
                 <td><input type="text" th:field="*{phone}"></td>
             </tr>
         </table>
-        <div class="btn_area_center"><input type="submit" value="保存" class="btn"></div>
+        <div class="btn_area_centerY"><input type="submit" value="保存" style="width:150px" class="btn">
     </form>
+    
+    <form th:action="@{/user/list}" >
+    <input type="submit" value="戻る" style="width:150px" class="btn">
+    </form>
+    </div>
   </body>
 </html>

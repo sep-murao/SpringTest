@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>削除確認</title>
+    <link href="/css/add.css" rel="stylesheet"></link>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+  <h1>下記を削除します。よろしいですか？</h1>
+  <table th:object="${userRequest}">
+    <tr>
+      <th class="cell_title">名前</th>
+      <th class="cell_required"></th>
+      <td th:text="*{name}"></td>
+    </tr>
+    <tr>
+      <th class="cell_title">住所</th>
+      <th class="cell_required"></th>
+      <td th:text="*{address}"></td>
+    </tr>
+    <tr>
+      <th class="cell_title">電話番号</th>
+      <th class="cell_required"></th>
+      <td th:text="*{phone}"></td>
+    </tr>
+  </table>
+  <div class="btn_area_centerY">
+    <a th:href="@{/user/{id}/delete(id=*{id})}"><input type="submit" value="削除" style="width:150px" ></a>
+    <a href="/user/list"><input type="submit" value="戻る" style="width:150px" ></a>
+  </div>
+  </body>
+</html>

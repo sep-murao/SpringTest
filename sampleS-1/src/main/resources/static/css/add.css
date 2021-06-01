@@ -32,7 +32,11 @@ table input {
   width: 100px;
     text-align: center;
 }
-.btn_area_center {
-  margin-top: 20px;
-  text-align: center;
+
+.btn_area_centerY {
+	position: absolute;
+	top:240px;
+	left:720px;
+	display:flex;
+
 }
